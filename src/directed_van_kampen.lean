@@ -424,40 +424,40 @@ end functor_map_covered_properties
 -  ### Define the behaviour on partwise covered paths
 -/
 
-def functor_map_aux_n {n : ℕ} : Π {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n), F_obj x ⟶ F_obj y :=
+def functor_map_of_covered_partwise {n : ℕ} : Π {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n), F_obj x ⟶ F_obj y :=
 nat.rec_on n
   (λ x y γ hγ, F₀ hγ)
   ( λ n ih x y γ hγ, (F₀ hγ.1) ≫ (ih hγ.2))
 
-localized "notation (name := functor_map_aux_n)
-  `Fₙ` := functor_map_aux_n hX h_comm" in directed_van_kampen
+localized "notation (name := functor_map_of_covered_partwise)
+  `Fₙ` := functor_map_of_covered_partwise hX h_comm" in directed_van_kampen
 
-lemma functor_map_aux_0_apply {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ 0) :
+lemma functor_map_of_covered_partwise_apply_0 {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ 0) :
   Fₙ hγ = F₀ hγ := rfl
 
-lemma functor_map_aux_n_apply {n : ℕ} {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n.succ) :
+lemma functor_map_of_covered_partwise_apply_succ {n : ℕ} {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n.succ) :
   Fₙ hγ = (F₀ hγ.left) ≫ (Fₙ hγ.right) := rfl
 
-lemma functor_map_aux_n_equal {n : ℕ} {γ₁ γ₂ : dipath x y} (h : γ₁ = γ₂) (hγ₁ : covered_partwise hX γ₁ n) (hγ₂ : covered_partwise hX γ₂ n) :
+lemma functor_map_of_covered_partwise_equal {n : ℕ} {γ₁ γ₂ : dipath x y} (h : γ₁ = γ₂) (hγ₁ : covered_partwise hX γ₁ n) (hγ₂ : covered_partwise hX γ₂ n) :
   Fₙ hγ₁ = Fₙ hγ₂ :=
 begin
   subst_vars,
 end
 
-lemma functor_map_aux_n_equal' {n m : ℕ} {γ₁ γ₂ : dipath x y} (h₁ : γ₁ = γ₂) (h₂ : n = m) (hγ₁ : covered_partwise hX γ₁ n) (hγ₂ : covered_partwise hX γ₂ m) :
+lemma functor_map_of_covered_partwise_equal' {n m : ℕ} {γ₁ γ₂ : dipath x y} (h₁ : γ₁ = γ₂) (h₂ : n = m) (hγ₁ : covered_partwise hX γ₁ n) (hγ₂ : covered_partwise hX γ₂ m) :
   Fₙ hγ₁ = Fₙ hγ₂ :=
 begin
   subst_vars,
 end
 
-lemma functor_map_aux_n_cast_params {n m : ℕ} {γ₁ γ₂ : dipath x y} (h₁ : γ₁ = γ₂) (h₂ : n = m) (hγ₁ : covered_partwise hX γ₁ n) :
+lemma functor_map_of_covered_partwise_cast_params {n m : ℕ} {γ₁ γ₂ : dipath x y} (h₁ : γ₁ = γ₂) (h₂ : n = m) (hγ₁ : covered_partwise hX γ₁ n) :
   Fₙ hγ₁ = Fₙ (covered_partwise_of_equal_params hX h₁ h₂ hγ₁) :=
 begin
   subst_vars,
 end
 
 
-lemma functor_map_aux_n_cast {x y x' y' : X} {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) (hx : x' = x) (hy : y' = y) :
+lemma functor_map_of_covered_partwise_cast {x y x' y' : X} {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) (hx : x' = x) (hy : y' = y) :
   Fₙ ((covered_partwise_cast_iff hX γ hx hy).mp hγ) =
     (eq_to_hom (show F_obj x' = F_obj x, by rw hx)) ≫ (Fₙ hγ) ≫ (eq_to_hom (show F_obj y = F_obj y', by rw hy)) :=
 begin
@@ -466,31 +466,31 @@ begin
   rw eq_to_hom_refl,
   rw category.comp_id,
   rw category.id_comp,
-  apply functor_map_aux_n_equal,
+  apply functor_map_of_covered_partwise_equal,
   ext t,
   refl,
 end
 
-lemma functor_map_aux_n_cast_left {x y x' : X} {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) (hx : x' = x) :
+lemma functor_map_of_covered_partwise_cast_left {x y x' : X} {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) (hx : x' = x) :
   Fₙ ((covered_partwise_cast_iff hX γ hx rfl).mp hγ) = (eq_to_hom (show F_obj x' = F_obj x, by rw hx)) ≫ (Fₙ hγ) :=
 begin
   subst_vars,
   rw eq_to_hom_refl,
   rw category.id_comp,
-  apply functor_map_aux_n_equal,
+  apply functor_map_of_covered_partwise_equal,
   ext t,
   refl,
 end
 
-lemma functor_map_aux_n_cast_right {x y y' : X} {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) (hy : y' = y) :
+lemma functor_map_of_covered_partwise_cast_right {x y y' : X} {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) (hy : y' = y) :
   Fₙ ((covered_partwise_cast_iff hX γ rfl hy).mp hγ) = (Fₙ hγ) ≫ (eq_to_hom (show F_obj y = F_obj y', by rw hy)) :=
 begin
-  rw functor_map_aux_n_cast hX h_comm hγ rfl hy,
+  rw functor_map_of_covered_partwise_cast hX h_comm hγ rfl hy,
   rw eq_to_hom_refl,
   rw category.id_comp,
 end
 
-lemma functor_map_aux_n_refine_of_covered (k : ℕ):
+lemma functor_map_of_covered_partwise_refine_of_covered (k : ℕ):
   Π {x y : X} {γ : dipath x y} (hγ : covered γ hX),
     Fₙ (covered_partwise_of_covered 0 hγ) = Fₙ (covered_partwise_of_covered k hγ) :=
 begin
@@ -502,11 +502,11 @@ begin
   {
     intros x y γ hγ,
     have : 1 < k + 2 := by linarith,
-    rw functor_map_aux_n_apply hX h_comm (covered_partwise_of_covered k.succ hγ),
+    rw functor_map_of_covered_partwise_apply_succ hX h_comm (covered_partwise_of_covered k.succ hγ),
     show (functor_map_of_covered hX h_comm hγ) = _,
     rw functor_map_of_covered_split_comp hX h_comm hγ (inv_I_pos (lt_trans zero_lt_one this)) (inv_I_lt_one this),
     congr,
-    simp [functor_map_aux_n],
+    simp [functor_map_of_covered_partwise],
     apply hk,
     exact (covered_split_path (inv_I_pos (lt_trans zero_lt_one this)) (inv_I_lt_one this) hγ).2,
   }
@@ -516,7 +516,7 @@ end
   When a path is partwise covered by n+1 paths, you can apply Fₙ to both parts of γ, when restricting to
   [0, (d+1)/(n+1)] and [(d+1)/(n+1)]. This lemma states that the composition of these two gives Fₙ γ
 -/
-lemma functor_map_aux_n_split {n : ℕ} :
+lemma functor_map_of_covered_partwise_split {n : ℕ} :
   Π {d : ℕ} (hdn : n > d) {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n),
  Fₙ hγ = Fₙ (covered_partwise_first_part_d hX (nat.succ_lt_succ hdn) hγ) ≫
         Fₙ (covered_partwise_second_part_d hX (nat.succ_lt_succ hdn) hγ) :=
@@ -530,13 +530,13 @@ begin
   induction d with d ih_d,
   { -- Case d = 0,
     intros x y γ hγ,
-    exact functor_map_aux_n_apply hX h_comm hγ,
+    refl,
   },
   intros x y γ hγ,
-  rw functor_map_aux_n_apply hX h_comm hγ,
+  rw functor_map_of_covered_partwise_apply_succ hX h_comm hγ,
   have : n > d := nat.succ_lt_succ_iff.mp hdn,
   rw ih_n this _,
-  rw functor_map_aux_n_apply hX h_comm _,
+  rw functor_map_of_covered_partwise_apply_succ hX h_comm _,
   rw category.assoc,
   show F₀ _ ≫ (Fₙ _ ≫ Fₙ _) =  F₀ _ ≫ (Fₙ _ ≫ Fₙ _),
   apply eq_of_morphism,
@@ -551,12 +551,12 @@ begin
   {
     apply (comp_eq_to_hom_iff _ _ _).mp,
     apply (eq_to_hom_comp_iff _ _ _).mp,
-    rw ← functor_map_aux_n_cast,
-    apply functor_map_aux_n_equal,
+    rw ← functor_map_of_covered_partwise_cast,
+    apply functor_map_of_covered_partwise_equal,
     rw split_properties.first_part_of_second_part γ (hdn) (nat.succ_pos d),
   },
-  rw ← functor_map_aux_n_cast_left,
-  apply functor_map_aux_n_equal',
+  rw ← functor_map_of_covered_partwise_cast_left,
+  apply functor_map_of_covered_partwise_equal',
   rw split_properties.second_part_of_second_part γ (nat.lt_of_succ_lt_succ hdn),
   rw nat.succ_sub_succ,
 end
@@ -565,62 +565,72 @@ end
   If a path can be covered partwise by `(n+1) ≥ 2` parts, its refinement by covering it by `k*(n+1)` parts is equal to the composition
   of covering the first part in `k` parts and the second part in `k*n` parts.
 -/
-lemma functor_map_aux_n_k_apply (n k : ℕ) {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n.succ) :
+lemma functor_map_of_covered_partwise_refine_apply (n k : ℕ) {x y : X} {γ : dipath x y} (hγ : covered_partwise hX γ n.succ) :
   Fₙ (covered_partwise_refine hX n.succ k hγ) =
       (Fₙ $ covered_partwise_of_covered k hγ.left) ≫ (Fₙ $ covered_partwise_refine hX n k hγ.right) :=
 begin
-  have h₁ := functor_map_aux_n_k_apply_aux₁ (nat.succ_pos n) (nat.succ_pos k),
+  have h₁ : (n+1+1)*(k+1) - 1 > (k + 1) - 1,
+  {
+    apply nat.pred_lt_pred (ne_of_gt (nat.succ_pos k)),
+    show k + 1 < (n+1+1) * (k + 1),
+    have : n + 1 + 1 > 1 := by linarith,
+    convert nat.mul_lt_mul_of_pos_right (this) (nat.succ_pos k),
+    exact (one_mul k).symm,
+  },
   have h₂ := frac_eq_inv₁ (nat.succ_pos k) (le_of_lt (nat.succ_lt_succ h₁)),
-  rw functor_map_aux_n_split hX h_comm h₁ (covered_partwise_refine hX n.succ k hγ),
+  rw functor_map_of_covered_partwise_split hX h_comm h₁ (covered_partwise_refine hX n.succ k hγ),
   apply eq_of_morphism,
   {
-    rw ← functor_map_aux_n_cast_right hX h_comm _ (congr_arg γ h₂.symm),
-    apply functor_map_aux_n_equal hX h_comm,
+    rw ← functor_map_of_covered_partwise_cast_right hX h_comm _ (congr_arg γ h₂.symm),
+    apply functor_map_of_covered_partwise_equal hX h_comm,
     ext t,
     rw dipath.cast_apply,
     exact split_properties.first_part_eq_of_point_eq _ h₂.symm _ _,
   },
-  rw ← functor_map_aux_n_cast_left hX h_comm _ (congr_arg γ h₂.symm),
-  apply functor_map_aux_n_equal' hX h_comm,
+  rw ← functor_map_of_covered_partwise_cast_left hX h_comm _ (congr_arg γ h₂.symm),
+  apply functor_map_of_covered_partwise_equal' hX h_comm,
   ext t,
   rw dipath.cast_apply,
   exact split_properties.second_part_eq_of_point_eq _ h₂.symm _ _,
-  exact functor_map_aux_n_k_apply_aux₂ (nat.succ_pos n) (nat.succ_pos k),
+  simp,
+  rw nat.succ_mul,
+  rw nat.sub.right_comm,
+  rw nat.add_sub_cancel,
 end
 
-lemma functor_map_aux_n_refine {n : ℕ} (k : ℕ) :
+lemma functor_map_of_covered_partwise_refine {n : ℕ} (k : ℕ) :
   Π {x y : X} {γ : dipath x y} (hγ_n : covered_partwise hX γ n) ,
     Fₙ hγ_n = Fₙ (covered_partwise_refine hX n k hγ_n) :=
 begin
   induction n with n h_ind,
   { -- Case n = 0
-    apply functor_map_aux_n_refine_of_covered,
+    apply functor_map_of_covered_partwise_refine_of_covered,
   },
   -- Case n > 0
   intros x y γ hγ,
-  rw functor_map_aux_n_k_apply hX h_comm n k hγ,
-  rw ← functor_map_aux_n_refine_of_covered hX h_comm _ hγ.left,
-  rw functor_map_aux_n_apply hX h_comm hγ,
+  rw functor_map_of_covered_partwise_refine_apply hX h_comm n k hγ,
+  rw ← functor_map_of_covered_partwise_refine_of_covered hX h_comm _ hγ.left,
+  rw functor_map_of_covered_partwise_apply_succ hX h_comm hγ,
   rw h_ind hγ.right,
   congr,
 end
 
-lemma functor_map_aux_n_apply_right_side {x y : X} {γ : dipath x y} {n : ℕ} (hγ : covered_partwise hX γ n.succ) :
+lemma functor_map_of_covered_partwise_apply_right_side {x y : X} {γ : dipath x y} {n : ℕ} (hγ : covered_partwise hX γ n.succ) :
   Fₙ hγ = Fₙ (covered_partwise_first_part_end_split hX hγ) ≫
           F₀ (covered_second_part_end_split hX hγ) :=
 begin
-  rw functor_map_aux_n_split hX h_comm (nat.lt_succ_self n),
-  rw functor_map_aux_n_equal' hX h_comm rfl (nat.sub_self n.succ),
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_split hX h_comm (nat.lt_succ_self n),
+  rw functor_map_of_covered_partwise_equal' hX h_comm rfl (nat.sub_self n.succ),
+  rw functor_map_of_covered_partwise_apply_0,
 end
 
-lemma functor_map_aux_n_trans_case_0 {x y z : X} {γ₁ : dipath x y} {γ₂ : dipath y z} (hγ₁ : covered_partwise hX γ₁ 0) (hγ₂ : covered_partwise hX γ₂ 0) :
+lemma functor_map_of_covered_partwise_trans_case_0 {x y z : X} {γ₁ : dipath x y} {γ₂ : dipath y z} (hγ₁ : covered_partwise hX γ₁ 0) (hγ₂ : covered_partwise hX γ₂ 0) :
   Fₙ (covered_partwise_trans hγ₁ hγ₂) = (Fₙ hγ₁) ≫ (Fₙ hγ₂) :=
 begin
-  rw functor_map_aux_0_apply,
-  rw functor_map_aux_0_apply,
-  rw functor_map_aux_n_apply,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
+  rw functor_map_of_covered_partwise_apply_0,
+  rw functor_map_of_covered_partwise_apply_succ,
+  rw functor_map_of_covered_partwise_apply_0,
   rw functor_map_of_covered_equal hX h_comm (split_properties.first_part_trans γ₁ γ₂) _ ((covered_cast_iff γ₁ hX _ _).mp hγ₁),
   rw functor_map_of_covered_equal hX h_comm (split_properties.second_part_trans γ₁ γ₂) _ ((covered_cast_iff γ₂ hX _ _).mp hγ₂),
   rw functor_map_of_covered_cast_right,
@@ -628,18 +638,18 @@ begin
   simp,
 end
 
-lemma functor_map_aux_n_trans {n : ℕ} : 
+lemma functor_map_of_covered_partwise_trans {n : ℕ} : 
   Π {x y z : X} {γ₁ : dipath x y} {γ₂ : dipath y z} (hγ₁ : covered_partwise hX γ₁ n) (hγ₂ : covered_partwise hX γ₂ n),
   Fₙ (covered_partwise_trans hγ₁ hγ₂) = (Fₙ hγ₁) ≫ (Fₙ hγ₂) :=
 begin
   induction n with n ih,
   { -- Case n = 0
     intros x y z γ₁ γ₂ hγ₁ hγ₂,
-    exact functor_map_aux_n_trans_case_0 hX h_comm hγ₁ hγ₂,
+    exact functor_map_of_covered_partwise_trans_case_0 hX h_comm hγ₁ hγ₂,
   }, -- Case n > 0
   intros x y z γ₁ γ₂ hγ₁ hγ₂,
-  rw functor_map_aux_n_apply hX h_comm,
-  rw functor_map_aux_n_apply hX h_comm hγ₁,
+  rw functor_map_of_covered_partwise_apply_succ hX h_comm,
+  rw functor_map_of_covered_partwise_apply_succ hX h_comm hγ₁,
   rw category.assoc,
   apply eq_of_morphism,
   {
@@ -650,8 +660,8 @@ begin
     exact split_properties.trans_first_part γ₁ γ₂ n.succ t,
     exact split_properties.trans_image_inv_eq_first γ₁ γ₂ n.succ,
   },
-  rw functor_map_aux_n_apply_right_side hX h_comm hγ₂,
-  rw functor_map_aux_n_cast_params hX h_comm rfl (nat.pred_succ n),
+  rw functor_map_of_covered_partwise_apply_right_side hX h_comm hγ₂,
+  rw functor_map_of_covered_partwise_cast_params hX h_comm rfl (nat.pred_succ n),
   rw ← category.assoc (Fₙ _) _ _,
   rw ← ih _ _,
   have : (n.succ + n.succ).succ - 1 = (n + n).succ.succ,
@@ -661,14 +671,14 @@ begin
     rw nat.succ_add,
     rw nat.add_succ,
   },
-  rw functor_map_aux_n_cast_params hX h_comm rfl this,
+  rw functor_map_of_covered_partwise_cast_params hX h_comm rfl this,
   rw ← category.assoc _ _,
-  rw ← functor_map_aux_n_cast_left,
-  rw functor_map_aux_n_apply_right_side hX h_comm _,
+  rw ← functor_map_of_covered_partwise_cast_left,
+  rw functor_map_of_covered_partwise_apply_right_side hX h_comm _,
   apply eq_of_morphism,
   {
-    rw ← functor_map_aux_n_cast_right,
-    apply functor_map_aux_n_equal' hX h_comm _ rfl,
+    rw ← functor_map_of_covered_partwise_cast_right,
+    apply functor_map_of_covered_partwise_equal' hX h_comm _ rfl,
     ext t,
     rw dipath.cast_apply,
     rw dipath.cast_apply,
@@ -686,13 +696,13 @@ begin
   exact split_properties.trans_image_inv_eq_first γ₁ γ₂ n.succ,
 end
 
-lemma functor_map_aux_n_unique {n m : ℕ} {γ : dipath x y}
+lemma functor_map_of_covered_partwise_unique {n m : ℕ} {γ : dipath x y}
   (hγ_n : covered_partwise hX γ n)
   (hγ_m : covered_partwise hX γ m) :
-  functor_map_aux_n hX h_comm hγ_n = functor_map_aux_n hX h_comm hγ_m :=
+  Fₙ hγ_n = Fₙ hγ_m :=
 begin
-  rw functor_map_aux_n_refine hX h_comm m hγ_n,
-  rw functor_map_aux_n_refine hX h_comm n hγ_m,
+  rw functor_map_of_covered_partwise_refine hX h_comm m hγ_n,
+  rw functor_map_of_covered_partwise_refine hX h_comm n hγ_m,
   congr' 2,
   ring,
 end
@@ -702,19 +712,19 @@ end
 -/
 
 def functor_map_aux (γ : dipath x y) : F_obj x ⟶ F_obj y :=
-  functor_map_aux_n hX h_comm (classical.some_spec (has_subpaths hX X₁_open X₂_open γ))
+  Fₙ (classical.some_spec (has_subpaths hX X₁_open X₂_open γ))
 
 localized "notation (name := functor_map_aux)
   `F_map_aux` := functor_map_aux hX X₁_open X₂_open h_comm" in directed_van_kampen
 
 lemma functor_map_aux_apply {n : ℕ} {γ : dipath x y} (hγ : covered_partwise hX γ n) :
-  functor_map_aux hX X₁_open X₂_open h_comm γ = functor_map_aux_n hX h_comm hγ := functor_map_aux_n_unique hX h_comm _ _
+  F_map_aux γ = Fₙ hγ := functor_map_of_covered_partwise_unique hX h_comm _ _
 
 lemma functor_map_aux_refl {x : X} : F_map_aux (dipath.refl x) = 𝟙 (F_obj x) :=
 begin
   have : covered_partwise hX (dipath.refl x) 0 := covered_refl x hX,
   rw functor_map_aux_apply _ _ _ _ this,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
   apply functor_map_of_covered_refl,
 end
 
@@ -744,7 +754,7 @@ begin
   rw functor_map_aux_apply hX X₁_open X₂_open h_comm hn',
   rw functor_map_aux_apply hX X₁_open X₂_open h_comm hm',
   rw functor_map_aux_apply hX X₁_open X₂_open h_comm (covered_partwise_trans hn' hm'),
-  rw functor_map_aux_n_trans,
+  rw functor_map_of_covered_partwise_trans,
 end
 
 lemma functor_map_aux_split_of_covered_partwise {x y : X} {γ : dipath x y} {n : ℕ} (hγ : covered_partwise hX γ n.succ) :
@@ -753,12 +763,12 @@ lemma functor_map_aux_split_of_covered_partwise {x y : X} {γ : dipath x y} {n :
 begin
   -- Rewrite L.H.S.
   rw functor_map_aux_apply hX _ _ h_comm hγ,
-  rw functor_map_aux_n_apply hX h_comm hγ,
+  rw functor_map_of_covered_partwise_apply_succ hX h_comm hγ,
 
   --Rewrite R.H.S.
   have : covered_partwise hX (split_dipath.first_part_dipath γ _) 0 := hγ.left,
   rw functor_map_aux_apply hX _ _ h_comm this,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
   rw functor_map_aux_apply hX _ _ h_comm hγ.right,
   refl,
 end
@@ -768,10 +778,10 @@ lemma functor_map_aux_of_covered_dihomotopic {x y : X} {γ γ' : dipath x y} {F 
 begin
   have : covered_partwise hX γ 0 := dipath.dihomotopy.covered_left_of_covered hF,
   rw functor_map_aux_apply _ _ _ _ this,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
   have : covered_partwise hX γ' 0 := dipath.dihomotopy.covered_right_of_covered hF,
   rw functor_map_aux_apply _ _ _ _ this,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
   exact functor_map_of_covered_dihomotopic hX h_comm hF,
 end
 
@@ -961,7 +971,7 @@ end
 -/
 
 def functor_map {x y : dπₓ X} (γ : x ⟶ y) : F_obj x ⟶ F_obj y :=
- quotient.lift_on γ (functor_map_aux hX X₁_open X₂_open h_comm) (functor_map_aux_of_dihomotopic hX X₁_open X₂_open h_comm)
+ quotient.lift_on γ F_map_aux (functor_map_aux_of_dihomotopic hX X₁_open X₂_open h_comm)
 
 localized "notation (name := functor_map)
   `F_map` := functor_map hX X₁_open X₂_open h_comm" in directed_van_kampen
@@ -1037,7 +1047,7 @@ begin
   have h₁ : range (γ.map (directed_subtype_inclusion X₁)) ⊆ X₁ := range_dipath_map_inclusion γ,
   have h₂ : covered_partwise hX (γ.map (directed_subtype_inclusion X₁)) 0 := or.inl h₁,
   rw functor_map_aux_apply hX X₁_open X₂_open h_comm h₂,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
   rw functor_map_of_covered_apply_left' hX h_comm h₁,
   rw functor_map_aux_part_one,
   rw subtype_dipath_of_included_dipath_eq,
@@ -1078,7 +1088,7 @@ begin
   have h₁ : range (γ.map (directed_subtype_inclusion X₂)) ⊆ X₂ := range_dipath_map_inclusion γ,
   have h₂ : covered_partwise hX (γ.map (directed_subtype_inclusion X₂)) 0 := or.inr h₁,
   rw functor_map_aux_apply hX X₁_open X₂_open h_comm h₂,
-  rw functor_map_aux_0_apply,
+  rw functor_map_of_covered_partwise_apply_0,
   rw functor_map_of_covered_apply_right' hX h_comm h₁,
   rw functor_map_aux_part_two,
   rw subtype_dipath_of_included_dipath_eq,
@@ -1125,7 +1135,7 @@ begin
   rw functor_map_apply,
   have : covered_partwise hX γ 0 := hγ,
   rw functor_map_aux_apply _ _ _ _ this,
-  rw functor_map_aux_0_apply _ _ this,
+  rw functor_map_of_covered_partwise_apply_0 _ _ this,
   cases hγ,
   {
     rw functor_map_of_covered_apply_left' _ _ hγ,

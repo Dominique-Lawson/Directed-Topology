@@ -272,31 +272,6 @@ begin
   exact sub_ne_zero_of_ne hbc.symm,
 end
 
-lemma functor_map_aux_n_k_apply_aux₁ {n k : ℕ} (hn : n > 0) (hk : k > 0) : (n+1)*k - 1 > k-1 :=
-begin
-  apply nat.pred_lt_pred,
-  apply ne_of_gt,
-  exact hk,
-  show k < (n+1) * k,
-  have : n + 1 > 1 := nat.succ_lt_succ hn,
-  convert nat.mul_lt_mul_of_pos_right (this) hk,
-  exact (one_mul k).symm,
-end
-
-lemma functor_map_aux_n_k_apply_aux₂ {n k : ℕ} (hn : n > 0) (hk : k > 0) : (n + 1) * k - 1 - (k - 1).succ = (n - 1 + 1) * k - 1 :=
-begin
-  show (n+1) *k - 1 - k.pred.succ = n.pred.succ * k - 1,
-  rw nat.succ_pred_eq_of_pos hk,
-  rw nat.succ_pred_eq_of_pos hn,
-  have : n * k ≥ 1 := nat.mul_pos hn hk,
-  calc (n+1) * k - 1 - k = n * k + 1 * k - 1 - k : by rw add_mul
-                    ...  = n * k + k - 1 - k : by rw one_mul
-                    ... = n * k - 1 + k - k : by rw (tsub_add_eq_add_tsub this)
-                    ... = n * k - 1 + (k - k) : by rw nat.add_sub_assoc (le_refl _)
-                    ... = n * k - 1 + 0 : by rw nat.sub_self
-                    ... = n * k - 1 : by rw add_zero
-end
-
 end equalities
 
 namespace homotopy
